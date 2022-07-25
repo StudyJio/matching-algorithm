@@ -184,7 +184,8 @@ def calculate_group_compatibility(user_array):
 
     for i in range(0, number_of_users):
         for j in range(i, number_of_users):
-            compatibility_score += calculate_pair_compatibility(user_array[i], user_array[j])
+            if (i != j):
+                compatibility_score += calculate_pair_compatibility(user_array[i], user_array[j])
     
     return compatibility_score / math.comb(number_of_users, 2)
 
@@ -192,9 +193,9 @@ def calculate_chromosome_fitness(chromosome, solution_index):
 
     # solution_index is not used. PyGAD requires such a parameter.
     
-    if (not chromosome_is_valid(chromosome)):
-        print("Chromosome is invalid.")
-        repair_chromosome(chromosome)
+    # if (not chromosome_is_valid(chromosome)):
+    #     print("Chromosome is invalid.")
+    #     repair_chromosome(chromosome)
 
     # Parse the chromosome and represent the grouping using a dictionary.
     # The dictionary's keys are the team IDs. Each value is an array of user objects.
@@ -329,8 +330,8 @@ def custom_crossover_function(parents, offspring_size, ga_instance):
 
             number_of_teams_assigned += 1
 
-        # At the end, there will probably be some leftover team members who are assigned to team -1.
-        # Randomly allocate these team members into groups.
+        # At the end, there will probably be some leftover users who are (still) assigned to team -1.
+        # Randomly allocate these users into groups.
 
         # First, get an array of the user IDs of users who are not assigned to a team.
         unassigned_user_ids = numpy.where(offspring == -1)[0]

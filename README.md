@@ -2,7 +2,13 @@
 
 ## The goal
 
-To allocate $5n$ users into $n$ groups of five members into a somewhat *good allocation*. (For now, we assume that the number of users we have is a multiple of 5.)
+To allocate $5n$ users into $n$ groups of five members into a somewhat *good allocation*.
+
+We assume that the number of users we have is a multiple of 5.
+
+**Input**: A .csv file with the $5n$ users' team preferences.
+
+**Output**: An array of length $5n$. The index represents the user's ID. The value $\in [1, n]$ represents the team that the user is assigned to.
 
 ## Definition of a 'good allocation'
 
@@ -30,7 +36,7 @@ To calculate the compatibility between two users,
 
 For example,
 
-* Two people reading the same six modules, sharing identical learning styles, and living at the same place are very compatible with each other. ($400$ points)
+* Two people reading the same six modules, sharing identical learning styles, and living at the same place are very compatible with each other, e.g. `ToyUserData3.csv`. ($400$ points)
 * Two people who have no modules in common, who have opposite learning styles, and who live $50 \text{km}$ from each other are incompatible with each other. ($-350$ points)
 
 # Genetic Algorithm Details
@@ -67,15 +73,14 @@ During the course of the simulation, the chromosomes undergo the following chang
 
 ### Mutation
 
-Swap the values of two randomly chosen genes (numbers $\in [0, n-1]$) in the chromosome, with the hope that this produces a better allocation.
+Within a chromosome, swap the values of two randomly chosen genes (numbers $\in [0, n-1]$) in the chromosome, with the hope that this produces a better allocation.
 
-
-
-**This is implemented, but not used due to a mysterious `TypeError`.**
-**`swap_mutation()` from the `pygad` library is used instead.**
+This is implemented as `custom_mutation_function()` in `main.py`. This is same as the default swap function given in the library, but we wanted to ensure that the chromosome invariants hold.
 
 ### Crossover
 
-The allocations of two chromosomes are combined.
+The best parts of two allocations are combined.
 
-**This is not yet implemented.**
+We examine all $2n$ groups in both chromosomes. We greedily place the best groups together, when there is no overlap in team members. The leftover users are assigned to random groups.
+
+This is implemented as `custom_crossover_function()` in `main.py`.
